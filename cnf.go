@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
 
@@ -22,11 +24,16 @@ func NewConfig() Config {
 	cnf.TelegramToken = ""
 	cnf.BotSummary = "Provide very brief, concise responses."
 	cnf.OllamaUrl = "http://127.0.0.1:11434"
-	cnf.Model = "llama3.1"
+	cnf.Model = "llama3.2"
 	cnf.TelegramToken = ""
-	cnf.HistoryRetainMinutes = 10
+	cnf.HistoryRetainMinutes = 8 * 60
 	return cnf
 }
+
+var cnfConfigFileName = flag.String("config", "./tolby.yaml", "Config file name")
+var cnfVerbose = flag.Bool("debug", false, "Debug verbose logs")
+
+//var cnfGenConfig = flag.Bool("gen-config", false, "Generate default config.yaml to stdout")
 
 func LoadConfigurationFile(filename string) Config {
 	if verbose {
@@ -67,5 +74,14 @@ func LoadConfigurationFile(filename string) Config {
 	return config
 }
 func initConfiguration() {
-	gConfig = LoadConfigurationFile("tolby.yaml")
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %s [options...]\n", os.Args[0])
+		fmt.Fprint(os.Stderr, "\n")
+		fmt.Fprint(os.Stderr, "Options:\n")
+		fmt.Fprint(os.Stderr, "\n")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
+	gConfig = LoadConfigurationFile(*cnfConfigFileName)
 }

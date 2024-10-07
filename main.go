@@ -11,9 +11,9 @@ func main() {
 	log.Println("Initializing Tolby...")
 
 	initConfiguration()
-	//initChatHistory()
+	initChatHistory()
 
-	//go runTelegramBot()
+	go runTelegramBot()
 
 	// Infinite not blocking loop
 	select {}
