@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"strconv"
 	"sync"
 	"time"
 
@@ -22,6 +22,7 @@ var gChatInformation map[int64]*Chatformation
 var gChatInformationMutex sync.Mutex
 
 func initChatHistory() {
+	INF("Initializing Tolby...")
 	gChatInformation = make(map[int64]*Chatformation)
 }
 
@@ -51,7 +52,7 @@ func chatHistoryGet(chatId int64) []ollamaapi.Message {
 	defer gChatInformationMutex.Unlock()
 
 	if chatInfo, ok := gChatInformation[chatId]; ok {
-		//fmt.Println(logChatHistory(chatInfo.Messages))
+		DBG(logChatHistory(chatInfo.Messages))
 		return chatInfo.Messages
 
 	}
@@ -73,7 +74,7 @@ func chatHistoryAdd(chatId int64, role string, message string) {
 
 		if (timeNow - chatInfo.LastMessageTimestamp) > int64(gConfig.HistoryRetainMinutes*60) {
 			//more time has passed then history retain..forget everything..clean slate..do a /clean basically
-			log.Printf("%d - Clearing message history since HistoryRetainSeconds expired", chatId)
+			DBG(strconv.FormatInt(chatId, 10) + "Clearing message history since HistoryRetainSeconds expired")
 			clear(pChatInfo.Messages)
 		}
 	} else {

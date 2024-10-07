@@ -49,7 +49,7 @@ func runTelegramBot() {
 
 	//bot.Debug = true
 
-	log.Printf("Running bot on telegram account '%s'", bot.Self.UserName)
+	INF("Running bot on telegram account '" + bot.Self.UserName + "'")
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
@@ -69,7 +69,8 @@ func runTelegramBot() {
 		//litter.Dump(update)
 
 		if update.Message != nil { // If we got a message
-			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+			//log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+			DBG("[" + update.Message.From.UserName + "] " + update.Message.Text)
 
 			workerChan <- update
 		}

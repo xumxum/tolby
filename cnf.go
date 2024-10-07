@@ -9,6 +9,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const VERSION = "1.0.0"
+
 type Config struct {
 	TelegramToken        string  `yaml:"telegramToken"`
 	BotSummary           string  `yaml:"botSummary"`
@@ -36,9 +38,7 @@ var cnfVerbose = flag.Bool("debug", false, "Debug verbose logs")
 //var cnfGenConfig = flag.Bool("gen-config", false, "Generate default config.yaml to stdout")
 
 func LoadConfigurationFile(filename string) Config {
-	if verbose {
-		log.Printf("Loading config file: %s", filename)
-	}
+	DBG("Loading config file: '" + filename + "'")
 
 	//1. Initialize config with default values
 	config := NewConfig()
@@ -48,9 +48,8 @@ func LoadConfigurationFile(filename string) Config {
 	configFile, err := os.Open(filename)
 
 	if err != nil {
-		log.Printf("Warning: '%s' config file not found, using default values!", filename)
+		WRN("'" + filename + "' config file not found, using default values!")
 		return config
-		//log.Fatal(err.Error())
 	}
 	defer configFile.Close()
 
@@ -75,6 +74,7 @@ func LoadConfigurationFile(filename string) Config {
 }
 func initConfiguration() {
 	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Tolby (Telegram OLlama Bot buddY), Ver: %s\n\n", VERSION)
 		fmt.Fprintf(os.Stderr, "Usage: %s [options...]\n", os.Args[0])
 		fmt.Fprint(os.Stderr, "\n")
 		fmt.Fprint(os.Stderr, "Options:\n")

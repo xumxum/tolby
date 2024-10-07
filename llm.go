@@ -44,7 +44,7 @@ func askLLMStreamed(question string, respCh chan string) {
 		},
 	}
 
-	log.Println("Asking LLM: ", question)
+	DBG("Asking LLM: " + question)
 
 	ctx := context.Background()
 	req := &ollamaapi.ChatRequest{
@@ -64,7 +64,7 @@ func askLLMStreamed(question string, respCh chan string) {
 			respCh <- resp.Message.Content
 
 			if !startedTalking {
-				log.Println("LLM started talking...")
+				DBG("LLM started talking...")
 				startedTalking = true
 			}
 			response += resp.Message.Content
@@ -82,8 +82,8 @@ func askLLMStreamed(question string, respCh chan string) {
 	//wait for the last word from the llm..
 	//log.Println("Waiting for callback to send done...")
 
-	log.Println("LLM Done")
-	log.Println(response)
+	DBG("LLM Done")
+	DBG(response)
 
 }
 
@@ -140,7 +140,7 @@ func askLLMStreamedContext(respCh chan string, chatId int64) {
 			respCh <- resp.Message.Content
 
 			if !startedTalking {
-				log.Println("LLM started talking...")
+				DBG("LLM started talking...")
 				startedTalking = true
 			}
 			response += resp.Message.Content
@@ -158,8 +158,8 @@ func askLLMStreamedContext(respCh chan string, chatId int64) {
 	//wait for the last word from the llm..
 	//log.Println("Waiting for callback to send done...")
 
-	log.Println("LLM Done")
-	log.Println(response)
+	DBG("LLM Done")
+	DBG(response)
 
 }
 
