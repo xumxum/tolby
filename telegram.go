@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -70,7 +71,7 @@ func runTelegramBot() {
 
 		if update.Message != nil { // If we got a message
 			//log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-			DBG("[" + update.Message.From.UserName + "] " + update.Message.Text)
+			DBG("[" + update.Message.From.FirstName + " " + update.Message.From.LastName + " (@" + update.Message.From.UserName + ")" + " ID:" + strconv.FormatInt(update.Message.From.ID, 10) + "] " + update.Message.Text)
 
 			workerChan <- update
 		}
